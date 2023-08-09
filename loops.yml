@@ -1,0 +1,12 @@
+---
+ - name: Loops
+   hosts: Windows
+   become_method: runas
+   tasks:
+   - name: add list of users in my nodes
+     ansible.windows.win_regedit:
+     user:
+      name: '{{item}}'
+      state: absent
+     with_items:
+          -  Notepad++

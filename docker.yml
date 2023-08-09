@@ -1,0 +1,26 @@
+---
+  - name: Docker Installation using Playbook
+    hosts: Password
+    gather_facts: false
+    become: yes
+    tasks:
+    - name: Install Docker
+      shell:
+        cmd: yum check-update
+    - name: Package Install
+      shell:
+        cmd: curl -fsSL https://get.docker.com/ | sh
+    - name: Start Docker
+      shell:          
+        cmd: sudo systemctl start docker
+    - name: Status Docker
+      shell:
+        cmd: sudo systemctl status docker
+    - name: Enable Docker
+      shell:
+        cmd: sudo systemctl enable docker
+      register: checkout
+    - debug:
+        var: checkout.stdout_lines
+...
+  

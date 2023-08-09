@@ -1,0 +1,63 @@
+---
+ - hosts: localhost
+   gather_facts: no
+   connection: local
+   vars:
+    vcenter_server: "192.168.30.15"
+    vcenter_username: "Administrator@vsphere.local"
+    vcenter_password: "Datamato@123"
+    datacenter_name: "Datamato"
+    #cluster_name: "Cluster" uncomment this if you have a cluster
+   tasks:
+   - name: Clone the template 
+     vmware_guest:
+      hostname: "{{ vcenter_server }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+      name: Faizan
+      template: Linux-Template
+      datacenter: "{{ datacenter_name }}"
+      folder: /{{ datacenter_name }}/vm
+      esxi_hostname: 192.168.30.12
+      datastore: "datastore(1)"
+      networks:
+       - name: VM Network
+         device_type: vmxnet3
+         type: static
+         ip: 192.168.30.32
+         netmask: 255.255.254.0
+         gateway: 192.168.30.1z
+         dns_server:
+         - 192.168.30.2
+         - 192.168.30.1
+
+      state: poweredon 
+      wait_for_ip_address: yes
+     delegate_to: localhost
+   - name: Second VM  
+     vmware_guest:
+      hostname: "{{ vcenter_server }}"
+      username: "{{ vcenter_username }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: False
+      name: Saif
+      template: Linux-Template
+      datacenter: "{{ datacenter_name }}"
+      folder: /{{ datacenter_name }}/vm
+      esxi_hostname: 192.168.30.12
+      datastore: "datastore(1)"
+      networks:
+       - name: VM Network
+         device_type: vmxnet3
+         type: static
+         ip: 192.168.30.33
+         netmask: 255.255.254.0
+         gateway: 192.168.30.1z
+         dns_server:
+         - 192.168.30.2
+         - 192.168.30.1
+
+      state: poweredon 
+      wait_for_ip_address: yes
+     delegate_to: localhost

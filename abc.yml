@@ -1,0 +1,15 @@
+---
+ - name: firstPlaybook
+   host: automationhub
+   gather_facts: no
+   tasks:
+   - name: Create a directory if it does not exist
+     ansible.builtin.file:
+      path: /etc/some_directory
+      state: directory
+      mode: '0755'
+
+
+JBOSS/jboss-eap-8.0/bin/jboss-cli.sh -c --controller=192.168.30.10:9990 --command="/server-group=GroupHA:add(profile=ha,socket-binding-group=ha-sockets)"
+
+JBOSS/jboss-eap-8.0/bin/jboss-cli.sh -c --controller=192.168.30.10:9990 --command="/host=192.168.30.22/server-config=server1:add(group=GroupHA,socket-binding-port-offset=100)"

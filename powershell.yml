@@ -1,0 +1,17 @@
+- name: Clone the template
+  vmware_guest:
+    hostname: 192.0.2.44
+    username: administrator@vsphere.local
+    password: vmware
+    validate_certs: False
+    name: testvm_"{{ item }}"
+    template: template_el7
+    datacenter: DC1
+    folder: /DC1/vm
+    state: poweredon
+    wait_for_ip_address: yes
+  delegate_to: localhost
+  with_items:
+    - 1
+    - 2
+    - 3

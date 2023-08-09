@@ -1,0 +1,65 @@
+---
+ - name: Docker Installation using Playbook
+   hosts: Arshad01
+   gather_facts: false
+   become: true
+   tasks:
+   - name: Git Checkout
+     ansible.builtin.git:
+      repo: https://github.com/arshuucom/Ansible_Module_Sample.git
+      dest: /tmp/
+
+
+---
+vcenter_hostname: "192.168.30.15"
+vcenter_datacenter: "Datamato"
+vcenter_username: "Administrator@vsphere.local"
+vcenter_password: "Datamato@123"
+vcenter_datastore: "datastore(1)"
+vm_name: "Ansible-Vmware"
+vcenter_validate_certs: false
+
+
+
+#! /bin/bash
+
+value=$(df -h)
+for i in $value
+do
+ echo $i
+ echo "Print"
+done
+
+
+#! /bin/bash
+i=$(df -h)
+while [ $i -eq 30 ]
+do
+    echo $i
+    i=$(($i))
+done
+
+#! /bin/bash
+
+value=$(df -h | awk '{print $5}' | sed 's/%//')
+
+for((value=30;value<=30;value++))
+do
+    echo $value
+    echo "print"
+done
+
+
+#! /bin/bash
+
+value=$(df -h | awk '{print $5}' | sed 's/%//')
+while [ $value -le 30]
+do
+  echo $value
+  value=$(($+1))
+done
+
+
+
+
+

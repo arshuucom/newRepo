@@ -1,0 +1,25 @@
+---
+  - name: Directory Creation
+    hosts: Arshad01
+    gather_facts: false
+    become: true
+    tasks:
+    - name: Directory
+      shell:
+       cmd: mkdir /root/RHCSA/directoryCreated
+    - name: Fetch Url
+      ansible.builtin.get_url:
+       url: https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=64311
+       dest: /root/RHCSA/directoryCreated
+    - name: Start Docker
+      shell:
+       cmd: sudo systemctl start docker
+    - name: Status Docker
+      shell:
+       cmd: sudo systemctl status docker
+    - name: Enable Docker
+      shell:
+       cmd: sudo systemctl enable docker
+
+
+       

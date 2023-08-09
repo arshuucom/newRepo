@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                          branches: [[name: '*/master']],
+                          userRemoteConfigs: [[url: 'https://gitlab.com/your/repo.git']]])
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'your-build-command' // Replace with your build command
+            }
+        }
+        
+        stage('Deploy to Tomcat') {
+            steps {
+                sh 'cp your-build-artifact.war $CATALINA_HOME/webapps' // Replace with your deploy command
+            }
+        }
+    }
+}

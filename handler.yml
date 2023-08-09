@@ -1,0 +1,22 @@
+---
+ - name: This sets up an httpd webserver
+   hosts: Password
+   tasks:
+   - name: Install apache packages
+     yum:
+      name: httpd
+      state: present
+   - name: ensure httpd is running
+     service:
+      name: httpd
+      state: started
+     notify: Restarted apache 
+   handlers:
+    - name: Restarted apache
+      service: 
+       name: httpd
+       state: restarted   
+    - name: Stop apache
+      service:
+       name: httpd
+       state: Stop

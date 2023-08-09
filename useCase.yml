@@ -1,0 +1,40 @@
+
+---
+- name: playbook for simple 1 GB partition
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    vcenter_server: "192.168.30.15"
+    vcenter_username: "Administrator@vsphere.local"
+    vcenter_password: "Datamato@123"
+    datacenter_name: "Datamato"
+    vm_name: "Arshad-VM"
+    vcenter_datastore: "datastore(1)"
+  tasks:
+  - name: Clone the template from Vsphere Client
+    vmware_guest:
+       hostname: "{{ vcenter_server }}"
+       username: "{{ vcenter_username }}"
+       password: "{{ vcenter_password }}"
+       validate_certs: False
+       name: "{{ vm_name }}"
+       datacenter: "{{ datacenter_name }}"
+       folder: /{{ datacenter_name }}/vm
+       esxi_hostname: 192.168.30.12
+       datastore: "{{ vcenter_datastore }}"
+  - name: Part
+    parted:
+      device: /dev/sda
+      number: 1
+      flags: [1]
+      state: present
+
+  #      disk:
+  #      - size_gb: "30"
+  #        datastore: "{{ vcenter_datastore }}"
+
+  - name: Dedicate one core to the VM
+    vmware.vmware_rest.vcenter_vm_hardware_cpu:
+     vm: '{{ vm_name.id }}'
+     count: 1

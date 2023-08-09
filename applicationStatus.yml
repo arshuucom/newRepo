@@ -1,0 +1,35 @@
+
+---
+ - name: Loops
+   hosts: Windows
+   gather_facts: true
+   become_method: runas
+   vars:
+    LIST: [Notepad++, 7-Zip]
+   tasks:
+   - name: add list of users in my nodes
+     ansible.windows.win_powershell:
+      script: |
+       $software = "Notepad++ (64-bit x64)";
+       $installed = (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* | Where { $_.DisplayName -eq $software }) -ne $null
+        If(-Not $installed) {
+        Write-Host "'$software' is NOT installed.";
+        } else {
+        Write-Host "'$software' is installed."
+        }
+     register: user_facts
+
+   - debug:
+      msg: "{{ user_facts.host_out }}"
+
+   - name: Uninstall Application
+     ansible.windows.win_regedit:
+      path: HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{{ item }}
+      state: absent
+     with_items:
+      - "{{ LIST }}"
+     register: user_fact
+
+   - debug:
+      msg: "{{ user_fact.host_out }}"
+...

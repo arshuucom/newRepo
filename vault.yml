@@ -1,0 +1,22 @@
+---
+  - name: Directory Creation
+    hosts: Arshad01
+    gather_facts: false
+    become: true
+    tasks:
+    - name: Directory
+      shell:
+       cmd: mkdir /root/RHCSA
+    - name: Fetch Url
+      ansible.builtin.get_url:
+       url: https://github.com/prometheus/node_exporter/releases/download/v0.17.0/node_exporter-0.17.0.linux-amd64.tar.gz
+       dest: /root/RHCSA
+       mode: '0644'
+    - name: Check the status
+      shell:
+        cmd: systemctl status "{{ item }}"
+        with_items:
+        - chronyd
+        - httpd
+        register: result
+...
